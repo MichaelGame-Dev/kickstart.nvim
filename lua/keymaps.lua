@@ -1,6 +1,10 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- Eval a line
+vim.keymap.set('n', '<space>x', ':.lua<CR>', { desc = 'Eval the current lua line' })
+vim.keymap.set('v', '<space>x', ':.lua<CR>', { desc = 'Eval the current lua line' })
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
