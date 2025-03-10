@@ -73,6 +73,19 @@ return {
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
+      -- Function to grep DragonRuby API docs
+      local function grep_dragonruby_api()
+        require('telescope.builtin').live_grep {
+          search_dirs = { 'docs/api' },
+          prompt_title = 'Live Grep API Docs',
+        }
+      end
+
+      -- Create the keymap dynamically if in a DragonRuby folder
+      local cwd = vim.fn.getcwd()
+      if cwd:match 'dragonruby' then
+        vim.keymap.set('n', '<leader>gd', grep_dragonruby_api, { desc = '[G]rep [D]ocs/api in DragonRuby projects' })
+      end
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
@@ -81,6 +94,14 @@ return {
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+
+      -- vim.keymap.set('n', '<leader>gd', function()
+      -- --   builtin.live_grep {
+      --     search_dirs = { 'docs/api' },
+      --     prompt_title = 'Live Grep API Docs',
+      --   }
+      -- end, { desc = '[G]rep [D]ocs/api in cwd' })
+
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
@@ -108,7 +129,14 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      vim.keymap.set('n', '<leader>so', function()
+        builtin.find_files { cwd = '~/org' }
+      end, { desc = '[S]earch [O]rg files' })
     end,
+
+    -- Add this at the end of the Telescope config
   },
 }
+
 -- vim: ts=2 sts=2 sw=2 et
